@@ -1,0 +1,14 @@
+{
+  "name": "JSplay",
+  "version": "1.0.0",
+  "description": "A Javascript implementation of Splay Tree binary search algorithm",
+  "author": "Pedro Mendes <pedrolopesme@gmail.com>",
+  "main": "jsplay.js",
+  "license" : "MIT",
+  "scripts": {
+    "test": "make test"
+  },
+  "devDependencies": {
+    "jasmine-node": "~1.14.5"
+  }
+}
