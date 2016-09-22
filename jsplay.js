@@ -23,12 +23,85 @@ module.exports = function() {
     }
 
     /**
+     * Check if the tree contains a given node by its key. 
+     */
+    this.contains = function(key){
+        return this.get(key) != null;
+    }
+
+    /**
+     * Returns a node.
+     * 
+     * Search for a node by its key 
+     */
+    this.get = function(key){
+        root = this.splay(root, key);
+        if(root.key === key){
+            return root;
+        }
+        return null;
+    }
+
+    /**
      * Splay tree insertion.
      * 
      * Adds a node to the tree and Splay it to root node. 
      */
     this.add = function(key, value){
-        throw new Error("not implemented yet...");
+        if(root == null){
+            root = new NodeDefinition(key, value);
+            return;
+        }
+
+        root = this.splay(root, key);
+
+        // In case of new node's key be lower than the root
+        if(key < root.key){
+            var node = new NodeDefinition(key, value);
+            node.left = root.left;
+            node.right = root;
+            root.left = null;
+            root = node;
+
+        // In case of new node's key be greater than the root
+        } else if(key > root.key){
+            var node = new NodeDefinition(key, value);
+            node.right = root.right;
+            node.left = root;
+            root.right = null;
+            root = node;
+
+        // In case of new node already exists in the tree
+        } else {
+            root.value = value;
+        }
+
+        this.updateHeight(root);
+    }
+
+    /**
+     * Splay tree node removal.
+     * 
+     * Removes a node to the tree 
+     */
+    this.remove = function(key) {
+        if(root == null) {
+            return;
+        } 
+
+        root = splay(root, key);
+
+        if(root.key === key){
+            if(root.left == null) {
+                root = root.right;
+            } else {
+                var node = root.right;
+                root = root.left;
+                splay(root, key);
+                root.right = node;
+            }
+            this.updateHeight(root);
+        }
     }
 
     /**
@@ -39,7 +112,74 @@ module.exports = function() {
      * the root.   
      */
     this.splay = function(node, key){
-        throw new Error("not implemented yet...");
+        if(node == null){
+            return null;
+        }
+
+        if(key < node.key){
+
+            // Key not found in tree
+            if(node.left == null) {
+                return this.updateHeight(node);
+            }
+
+            if(key < node.left.key){
+                node.left.left =  splay(node.left.left, key);
+                node = this.rotateRight(node);
+            } else if(key > node.left.key) {
+                node.left.right = splay(node.left.right, key);
+                if(node.left.right != null){
+                    node.left = this.rotateLeft(node.left);
+                }
+            }
+
+            if(node.left != null) {
+                node = this.rotateRight(node);
+            } 
+    
+        } else if(key > node.key){
+
+            // Key not found in tree
+            if(node.right == null) {
+                return this.updateHeight(node);
+            }
+
+            if(key < node.right.key) {
+                node.right.left = splay(node.right.left, key);
+                if(node.right.left != null){
+                    node.right = this.rotateRight(node.right);
+                } 
+            } else if (key > node.right.key) {
+                node.right.right = splay(node.right.right, key);
+                node = this.rotateLeft(node);
+            }
+
+            if(node.right != null){
+                node = this.rotateLeft(node);
+            }
+        }
+
+        return this.updateHeight(node);
+    }
+
+    /**
+     * Update height
+     * 
+     * Helper function that update a node's height
+     */
+    this.updateHeight = function(node){
+        if(node != null) {
+            if(node.left == null && node.right == null) { 
+                node.height = 1;
+            } else if(node.left == null){
+                node.height = 1 + node.right.height; 
+            }else if(node.right == null){
+                node.height = 1 + node.left.height; 
+            } else {
+                node.height = 1 + Math.max(node.left.height, node.right.height);
+            }
+        }
+        return node;
     }
 
     /**
@@ -70,6 +210,10 @@ module.exports = function() {
      * Helper function that rotates node positions in closewise direction 
      */
     this.rotateRight  = function(node){
+        if(node == null) {
+            return;
+        }
+
         var left = node.left;
         node.left  = left.right;
         node.right = node
@@ -81,7 +225,11 @@ module.exports = function() {
      * 
      * Helper function that rotates node positions in counterclosewise direction 
      */
-    this.rotateRight  = function(node){
+    this.rotateLeft  = function(node){
+        if(node == null) {
+            return;
+        }
+
         var left = node.right;
         node.right  = left.left;
         node.left = node;
