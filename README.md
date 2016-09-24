@@ -10,7 +10,7 @@
 <h4 align="center">A NodeJS implementation of Splay Tree binary search algorithm.</h4>
 
 <p align="center">
-  <a href="https://travis-ci.org/pedrolopesme/jsplay"><img src="https://travis-ci.org/pedrolopesme/jsplay.png" alt="Travis Builds"></a>
+  <a href="https://travis-ci.org/pedrolopesme/jsplay"><img src="https://api.travis-ci.org/pedrolopesme/jsplay.png?branch=master" alt="Travis Builds"></a>
 </p>
 <br>
 
