@@ -9,7 +9,7 @@
  */
 module.exports = function() {
 
-    var root = null;
+    this.root = null;
 
     /**
      * Node definition used throughout the code.
@@ -48,9 +48,9 @@ module.exports = function() {
      * Search for a node by its key 
      */
     this.getNode = function(key){
-        root = this.splay(root, key);
-        if(root.key === key){
-            return root;
+        this.root = this.splay(this.root, key);
+        if(this.root.key === key){
+            return this.root;
         }
         return null;
     }
@@ -61,35 +61,36 @@ module.exports = function() {
      * Adds a node to the tree and Splay it to root node. 
      */
     this.add = function(key, value){
-        if(root == null){
-            root = new NodeDefinition(key, value);
+
+        if(this.root == null){
+            this.root = new NodeDefinition(key, value);
             return;
         }
 
-        root = this.splay(root, key);
+        this.root = this.splay(this.root, key);
 
         // In case of new node's key be lower than the root
-        if(key < root.key){
+        if(key < this.root.key){
             var node = new NodeDefinition(key, value);
-            node.left = root.left;
-            node.right = root;
-            root.left = null;
-            root = node;
+            node.left = this.root.left;
+            node.right = this.root;
+            this.root.left = null;
+            this.root = node;
 
         // In case of new node's key be greater than the root
-        } else if(key > root.key){
+        } else if(key > this.root.key){
             var node = new NodeDefinition(key, value);
-            node.right = root.right;
-            node.left = root;
-            root.right = null;
-            root = node;
+            node.right = this.root.right;
+            node.left = this.root;
+            this.root.right = null;
+            this.root = node;
 
         // In case of new node already exists in the tree
         } else {
-            root.value = value;
+            this.root.value = value;
         }
-
-        this.updateHeight(root);
+        
+        this.updateHeight(this.root);
     }
 
     /**
@@ -98,22 +99,22 @@ module.exports = function() {
      * Removes a node to the tree 
      */
     this.remove = function(key) {
-        if(root == null) {
+        if(this.root == null) {
             return;
         } 
 
-        root = splay(root, key);
+        this.root = splay(this.root, key);
 
-        if(root.key === key){
-            if(root.left == null) {
-                root = root.right;
+        if(this.root.key === key){
+            if(this.root.left == null) {
+                this.root = this.root.right;
             } else {
-                var node = root.right;
-                root = root.left;
-                splay(root, key);
-                root.right = node;
+                var node = this.root.right;
+                this.root = this.root.left;
+                splay(this.root, key);
+                this.root.right = node;
             }
-            this.updateHeight(root);
+            this.updateHeight(this.root);
         }
     }
 
@@ -196,25 +197,25 @@ module.exports = function() {
     }
 
     /**
-     * Size 
+     * getSize 
      * 
      * Helper function that calculates tree size.
      */
-    this.size  = function(){
-        return this.treeSize(root);
+    this.getSize  = function(){
+        return this.getSubTreeSize(this.root);
     }
 
     /**
-     * Subtree Size 
+     * Subtree size 
      * 
      * Helper function that calculates subtree size starting
      * from a given node;
      */
-    this.treeSize  = function(node){
+    this.getSubTreeSize  = function(node){
         if(node == null) {
             return 0;
         }
-        return 1 + this.treeSize(node.leftNode) + this.treeSize(node.rightNode);
+        return 1 + this.getSubTreeSize(node.leftNode) + this.getSubTreeSize(node.rightNode);
     }
 
     /**
