@@ -95,9 +95,9 @@ module.exports = function() {
     }
 
     /**
-     * Splay tree node removal.
+     * Splay tree node removal
      * 
-     * Removes a node to the tree 
+     * Removes a node from the tree 
      */
     this.remove = function(key) {
         if(this.root == null) {
