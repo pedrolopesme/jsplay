@@ -47,11 +47,15 @@ module.exports = function() {
      * Search for a node by its key 
      */
     this.getNode = function(key){
-        this.root = this.splay(this.root, key);
+        var node = this.splay(this.root, key);
 
-        if(this.root.key === key){
-            return this.root;
+        if(node != null){
+            this.root = node;
+            if(this.root.key === key){
+                return this.root;
+            }
         }
+
         return null;
     }
 
@@ -106,7 +110,7 @@ module.exports = function() {
             } else {
                 var node = this.root.right;
                 this.root = this.root.left;
-                splay(this.root, key);
+                this.splay(this.root, key);
                 this.root.right = node;
             }
         }
@@ -116,7 +120,7 @@ module.exports = function() {
      * Splay tree main function.
      * 
      * Splay a node to the root of the tree. If there isn't a node with 
-     * that key, the last node along the search path for the key is splay to 
+     * that key, the last node along the search path for the key will be splayed to 
      * the root.   
      */
     this.splay = function(node, key){
@@ -133,10 +137,10 @@ module.exports = function() {
             }
 
             if(key < node.left.key){
-                node.left.left =  splay(node.left.left, key);
+                node.left.left =  this.splay(node.left.left, key);
                 node = this.rotateRight(node);
             } else if(key > node.left.key) {
-                node.left.right = splay(node.left.right, key);
+                node.left.right = this.splay(node.left.right, key);
                 if(node.left.right != null){
                     node.left = this.rotateLeft(node.left);
                 }
@@ -154,12 +158,12 @@ module.exports = function() {
             }
 
             if(key < node.right.key) {
-                node.right.left = splay(node.right.left, key);
+                node.right.left = this.splay(node.right.left, key);
                 if(node.right.left != null){
                     node.right = this.rotateRight(node.right);
                 } 
             } else if (key > node.right.key) {
-                node.right.right = splay(node.right.right, key);
+                node.right.right = this.splay(node.right.right, key);
                 node = this.rotateLeft(node);
             }
 
@@ -195,29 +199,14 @@ module.exports = function() {
     }
 
     /**
-     * Rotate right 
-     * 
-     * Helper function that rotates node positions in closewise direction 
-     */
-    this.rotateRight  = function(node){
-        if(node == null) {
-            return null;
-        }
-
-        var left = node.left;
-        node.left  = left.right;
-        left.right = node
-        return left;
-    }
-
-    /**
      * Rotate left 
      * 
      * Helper function that rotates node positions in counterclosewise direction 
      */
     this.rotateLeft  = function(node){
-        if(node == null) {
-            return null;
+
+        if(node == null || node.right == null) {
+            return node;
         }
 
         var right = node.right;
@@ -226,4 +215,19 @@ module.exports = function() {
         return right;
     }
 
+    /**
+     * Rotate right 
+     * 
+     * Helper function that rotates node positions in closewise direction 
+     */
+    this.rotateRight  = function(node){
+        if(node == null || node.left == null) {
+            return node;
+        }
+
+        var left = node.left;
+        node.left  = left.right;
+        left.right = node
+        return left;
+    }
 }
