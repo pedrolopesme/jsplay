@@ -17,9 +17,8 @@ module.exports = function() {
     var NodeDefinition = function(key, value){        
         this.key = key;
         this.value = value;
-        this.leftNode = null;   // left subtree  
-        this.rightNode = null;  // right subtree
-        this.height = 0;        // node height
+        this.left = null;   // left subtree  
+        this.right = null;  // right subtree
     }
 
     /**
@@ -49,6 +48,7 @@ module.exports = function() {
      */
     this.getNode = function(key){
         this.root = this.splay(this.root, key);
+
         if(this.root.key === key){
             return this.root;
         }
@@ -84,13 +84,10 @@ module.exports = function() {
             node.left = this.root;
             this.root.right = null;
             this.root = node;
-
         // In case of new node already exists in the tree
         } else {
             this.root.value = value;
         }
-        
-        this.updateHeight(this.root);
     }
 
     /**
@@ -103,8 +100,6 @@ module.exports = function() {
             return;
         } 
 
-        this.root = splay(this.root, key);
-
         if(this.root.key === key){
             if(this.root.left == null) {
                 this.root = this.root.right;
@@ -114,7 +109,6 @@ module.exports = function() {
                 splay(this.root, key);
                 this.root.right = node;
             }
-            this.updateHeight(this.root);
         }
     }
 
@@ -126,6 +120,7 @@ module.exports = function() {
      * the root.   
      */
     this.splay = function(node, key){
+
         if(node == null){
             return null;
         }
@@ -134,7 +129,7 @@ module.exports = function() {
 
             // Key not found in tree
             if(node.left == null) {
-                return this.updateHeight(node);
+                return node;
             }
 
             if(key < node.left.key){
@@ -145,7 +140,7 @@ module.exports = function() {
                 if(node.left.right != null){
                     node.left = this.rotateLeft(node.left);
                 }
-            }
+            } 
 
             if(node.left != null) {
                 node = this.rotateRight(node);
@@ -155,7 +150,7 @@ module.exports = function() {
 
             // Key not found in tree
             if(node.right == null) {
-                return this.updateHeight(node);
+                return node;
             }
 
             if(key < node.right.key) {
@@ -173,28 +168,9 @@ module.exports = function() {
             }
         }
 
-        return this.updateHeight(node);
-    }
-
-    /**
-     * Update height
-     * 
-     * Helper function that update a node's height
-     */
-    this.updateHeight = function(node){
-        if(node != null) {
-            if(node.left == null && node.right == null) { 
-                node.height = 1;
-            } else if(node.left == null){
-                node.height = 1 + node.right.height; 
-            }else if(node.right == null){
-                node.height = 1 + node.left.height; 
-            } else {
-                node.height = 1 + Math.max(node.left.height, node.right.height);
-            }
-        }
         return node;
     }
+
 
     /**
      * getSize 
@@ -215,7 +191,7 @@ module.exports = function() {
         if(node == null) {
             return 0;
         }
-        return 1 + this.getSubTreeSize(node.leftNode) + this.getSubTreeSize(node.rightNode);
+        return 1 + this.getSubTreeSize(node.left) + this.getSubTreeSize(node.right);
     }
 
     /**
@@ -225,12 +201,12 @@ module.exports = function() {
      */
     this.rotateRight  = function(node){
         if(node == null) {
-            return;
+            return null;
         }
 
         var left = node.left;
         node.left  = left.right;
-        node.right = node
+        left.right = node
         return left;
     }
 
@@ -241,13 +217,13 @@ module.exports = function() {
      */
     this.rotateLeft  = function(node){
         if(node == null) {
-            return;
+            return null;
         }
 
-        var left = node.right;
-        node.right  = left.left;
-        node.left = node;
-        return left;
+        var right = node.right;
+        node.right  = right.left;
+        right.left = node;
+        return right;
     }
 
 }

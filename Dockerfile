@@ -15,4 +15,4 @@ RUN npm install
 # Bundle module source
 COPY . /usr/src/jsplay
 
-CMD [ "npm test" ]
+# CMD [ "npm test" ]
