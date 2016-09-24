@@ -26,7 +26,20 @@ module.exports = function() {
      * Check if the tree contains a given node by its key. 
      */
     this.contains = function(key){
-        return this.get(key) != null;
+        return this.getNode(key) != null;
+    }
+
+    /**
+     * Returns a node's value.
+     * 
+     * Search for a node by its key and return it's  value.
+     */
+    this.get = function(key){
+        var node = this.getNode(key);
+        if(node != null){
+            return node.value;
+        }
+        return null;
     }
 
     /**
@@ -34,7 +47,7 @@ module.exports = function() {
      * 
      * Search for a node by its key 
      */
-    this.get = function(key){
+    this.getNode = function(key){
         root = this.splay(root, key);
         if(root.key === key){
             return root;
