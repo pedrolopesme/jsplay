@@ -1,4 +1,4 @@
-IFROM node:6
+FROM node:6
 
 MAINTAINER Pedro Mendes <pedrolopesme@gmail.com> 
 
@@ -8,11 +8,11 @@ WORKDIR /usr/src/jsplay
 
 # Instaling module dependencies
 COPY package.json /usr/src/jsplay/
+RUN npm install jasmine-node -g
+RUN npm install uglify-js -g
 RUN npm install
-
-# ./node_modules/jasmine-node/bin/jasmine-node --verbose --junitreport --noColor spec/*
 
 # Bundle module source
 COPY . /usr/src/jsplay
 
-# CMD [ "npm test" ]
+CMD [ "npm test" ]

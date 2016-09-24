@@ -32,8 +32,8 @@ that key, the last node along the search path for the key will be splayed to the
 
 #### Insertion
 
-In order to insert a new node into the tree, you need supply it's Key and Value. You're free to use a key with any type,
-but it's extremely recommended integer keys in order to preserve fast key comparison between nodes. The new node will be splayed to the root of the tree.
+In order to insert a new node into the tree, you need to supply it's Key and Value. You're free to use a key with any type,
+but it's extremely recommended to use integer keys in order to preserve fast key comparison between nodes. The new node will be splayed to the root of the tree.
 
 ```javascript
 var JSplay = require("jsplay");
@@ -98,7 +98,11 @@ Just run:
 
 `$ npm install`
 
-Or build and run Docker image :-)
+### Compressing source
+
+Just run:
+
+`$ make compress`
 
 ### Running tests
 
@@ -116,7 +120,10 @@ In order to run it, simply do:
 
 `$ docker run pedrolopesme/jsplay` 
 
-
 ### Credits
 
-JSplay logo was created by [PixelKit](http://www.pixelkit.com/), released under [Creative Commons Attribution 3.0 Unported (CC BY 3.0)](http://creativecommons.org/licenses/by/3.0/) license. 
+JSplay logo was created by [PixelKit](http://www.pixelkit.com/), released under [Creative Commons Attribution 3.0 Unported (CC BY 3.0)](http://creativecommons.org/licenses/by/3.0/) license.
+
+### License
+
+MIT. Copyright (c) [Pedro Mendes](http://pedromendes.com.br). 
