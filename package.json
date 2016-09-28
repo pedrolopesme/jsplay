@@ -1,10 +1,14 @@
 {
   "name": "JSplay",
   "version": "1.0.0",
-  "description": "A Javascript implementation of Splay Tree binary search algorithm",
+  "description": "A NodeJs implementation of Splay Tree binary search algorithm",
   "author": "Pedro Mendes <pedrolopesme@gmail.com>",
-  "main": "jsplay.js",
-  "license" : "MIT",
+	"main": "jsplay.js",
+	"license" : "MIT",
+  "repository" :{ 
+    "type" : "git",
+    "url" : "https://github.com/pedrolopesme/jsplay.git"
+  },
   "scripts": {
     "test": "make test"
   },
