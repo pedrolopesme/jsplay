@@ -14,6 +14,13 @@
 </p>
 <br>
 
+
+### Changes
+
+#### [1.0.1] - 2016-10-08
+
+- Allowing splay the deepest node to the root using splayDeepest method
+
 ### Features
 
 **JSplay** is the classic splay tree search algorithm written completely in JavaScript, compatible with NodeJs applications 
@@ -89,6 +96,27 @@ tree.add(2, { "val" : 2 });
 
 tree.remove(1);
 tree.contains(1); // returns false
+```
+
+#### Splay Deepest
+
+Get the deepest node in the tree and splay it to the root. It allows
+access the least used node. 
+
+```javascript
+var JSplay = require("jsplay");
+
+var tree = new JSplay();
+tree.add(6, "six");
+tree.add(5, "five");
+tree.add(4, "four");
+tree.add(2, "two");
+tree.add(1, "one");
+tree.add(3, "three");
+
+tree.getRoot()  // returns 3 - the last inserted node
+tree.splayDeepest();
+tree.getRoot(); // returns 6 - the first inserted node
 ```
 
 
