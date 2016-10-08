@@ -22,6 +22,39 @@ module.exports = function() {
     }
 
     /**
+     * Structure used to calculate the deepest node on the tree
+     * when its needed.
+     */
+    var DeepestNode = function(){
+
+        var deepestLevel = 0;
+        var deepestNode = null;
+
+        /**
+         * Calculates the deepest node recursively
+         */
+        var caculate = function(node, level){
+            if(node != null){
+                caculate(node.left, ++level);
+                if(level > deepestLevel){
+                    deepestNode = node;
+                    deepestLevel = level;
+                }
+                caculate(node.right, ++level);
+            }
+        }
+
+        /**
+         * Returns the deepest node if it was found
+         */
+        this.find = function(node){
+            caculate(node, 0);
+            return deepestNode;
+        }
+
+    }
+
+    /**
      * Check if the tree contains a given node by its key. 
      */
     this.contains = function(key){
@@ -48,14 +81,12 @@ module.exports = function() {
      */
     this.getNode = function(key){
         var node = this.splay(this.root, key);
-
         if(node != null){
             this.root = node;
             if(this.root.key === key){
                 return this.root;
             }
         }
-
         return null;
     }
 
@@ -88,6 +119,7 @@ module.exports = function() {
             node.left = this.root;
             this.root.right = null;
             this.root = node;
+
         // In case of new node already exists in the tree
         } else {
             this.root.value = value;
@@ -175,6 +207,18 @@ module.exports = function() {
         return node;
     }
 
+     /**
+     * Splay the deepest node 
+     * 
+     * Finds the deepest node in the tree and splay it to root; 
+     */
+    this.splayDeepest = function(node){
+        var deepestNodeFinder = new DeepestNode();
+        var node = deepestNodeFinder.find(this.root);
+        if(node != null){
+            this.get(node.key);
+        }
+    }
 
     /**
      * getSize 
@@ -204,7 +248,6 @@ module.exports = function() {
      * Helper function that rotates node positions in counterclosewise direction 
      */
     this.rotateLeft  = function(node){
-
         if(node == null || node.right == null) {
             return node;
         }
@@ -230,4 +273,5 @@ module.exports = function() {
         left.right = node
         return left;
     }
+
 }

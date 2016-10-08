@@ -89,7 +89,6 @@ describe("JSplay", function(){
             expect(node.left.left.key).toEqual(1);
         });
 
-
         it("shouldn't rotate nodes to right when there is only one node",function(){
              tree.add(1, "one");
              var node = tree.rotateRight(tree.root);
@@ -167,7 +166,6 @@ describe("JSplay", function(){
             expect(node.left.left.key).toEqual(1);
         });
 
-
         it("should run on a very unbalanced tree",function(){
             for(var i = 1; i <= 1000; i++){
                 tree.add(i, "node #" + i);
@@ -176,6 +174,23 @@ describe("JSplay", function(){
             var node = tree.splay(tree.root, 1000);
             expect(node.key).toEqual(1000);
             expect(tree.getSubTreeSize(node)).toEqual(1000);
+        });
+
+        it("should allow splay the deepest node to the root",function(){
+            tree.add(6, "three");
+            tree.add(5, "three");
+            tree.add(4, "four");
+            tree.add(2, "two");
+            tree.add(1, "one");
+            tree.add(3, "three");
+
+            expect(tree.root.key).toEqual(3);
+            tree.splayDeepest();
+            expect(tree.root.key).toEqual(6);
+        });
+
+        it("should behave properly trying to splay the deepest node on an empty tree",function(){
+            expect(function(){ tree.splayDeepest(); }).not.toThrow();
         });
     });
 
