@@ -177,8 +177,8 @@ describe("JSplay", function(){
         });
 
         it("should allow splay the deepest node to the root",function(){
-            tree.add(6, "three");
-            tree.add(5, "three");
+            tree.add(6, "six");
+            tree.add(5, "five");
             tree.add(4, "four");
             tree.add(2, "two");
             tree.add(1, "one");
